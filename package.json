@@ -1,19 +1,25 @@
 {
   "name": "meanair-server.util",
-  "version": "0.4.0",
-  "description": "Common utility pieces across meanair structured server apps",
+  "version": "0.5.0",
+  "description": "Core utility for constructing and runing meanair server apps",
+  "author": "Jonathon Kresnser",
+  "license": "MIT",
   "repository": "https://github.com/jkresner/meanair-server.util",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "node --harmony-destructuring test/index.js"
   },
   "author": "Jonathon Kresner",
   "license": "MIT",
   "dependencies": {
-    "colors": "1.1.2",
+    "colors": "1.1.x",
     "dotenv": "1.2.0",
     "lodash": "3.10.1",
-    "meanair-shared.util": "0.4.0",
-    "moment": "2.10.6"
+    "meanair-shared.util": "0.5.x",
+    "moment": "2.10.6",
+    "moment-timezone": "0.4.0"
+  },
+  "devDependencies": {
+    "meanair-scream": "0.5.x"
   }
 }
