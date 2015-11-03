@@ -1,4 +1,5 @@
 {
+  "specs":                "all",
   "paths": {
     "app":                "app.js"
   }

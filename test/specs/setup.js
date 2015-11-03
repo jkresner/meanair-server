@@ -1,35 +1,30 @@
 var Setup = require('../../lib/index')
 
 
-module.exports = () =>
-
-
-DESCRIBE("Setup", function() {
+module.exports = () => DESCRIBE("Index", function() {
 
 
   IT('Globals set', function() {
     var overrides = {
-      auth:     false,
-      http:     { host:'test://mean.air/', sessionStore:false },
-      mongoUrl: false
+      auth:     undefined,
+      http:     { host:'test://mean.air/', sessionStore: undefined },
+      mongoUrl: undefined
     }
-
     expect(global._).to.be.undefined
     expect(global.util).to.be.undefined
     expect(global.$log).to.be.undefined
-    var setup = Setup("other", overrides)
+    var setup = Setup("dev", overrides)
     expect(global._).to.exist
     expect(global.util).to.exist
     expect(global.$log).to.exist
-
     DONE()
   })
 
 
   IT('Config returned', function() {
-    var github = { clientID: 'returnOfTheConfig', clientSecret: false, emails: false }
+    var github = { clientID: 'returnOfTheConfig', clientSecret: 'shhhhhh', emails: false, userAgent: 't2' }
     var overrides = {
-      auth:     { oauth: { github } },
+      auth:     { oauth: { github }, appKey: 'return' },
       http:     { host:'test2://mean.air/', sessionStore:false },
       mongoUrl: 'yehaooouuu'
     }
