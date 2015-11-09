@@ -1,0 +1,13 @@
+{
+  "auth":                     "{{undefine}}",
+  "model": {
+    "mongoUrl":               "mongodb://localhost/meanair-server-test2",
+    "sessionStore": {
+      "collection":           "sessions-test2"
+    }
+  },
+  "log": {
+    "app":                    false,
+    "mw":                     false
+  }
+}

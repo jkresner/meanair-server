@@ -1,0 +1,12 @@
+{
+  "auth":                     "{{undefine}}",
+  "model":                    "{{undefine}}",
+  "log": {
+    "app":                    false,
+    "mw":                     false
+  },
+  "logic":                    "{{undefine}}",
+  "middleware": {
+    "session":                "{{undefine}}"
+  }
+}
