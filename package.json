@@ -1,6 +1,6 @@
 {
   "name": "meanair-server",
-  "version": "0.5.1",
+  "version": "0.5.x",
   "description": "Core util for wiring up configuring and running meanair server apps",
   "author": "Jonathon Kresner",
   "license": "ISC",
@@ -10,10 +10,16 @@
     "test": "node --harmony-destructuring test/index.js"
   },
   "dependencies": {
+    "body-parser": "1.13.2",
     "colors": "1.0.3",
+    "cookie-parser": "1.3.5",
     "dotenv": "1.2.0",
+    "express": "4.13.1",
+    "express-session": "1.11.3",
+    "hbs": "3.1.0",
     "lodash": "3.10.1",
-    "meanair-shared": "0.5.x",
+    "meanair-middleware": "0.6.x",
+    "meanair-shared": "0.6.x",
     "moment": "2.10.6",
     "moment-timezone": "0.4.0"
   },
