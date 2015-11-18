@@ -1,17 +1,13 @@
-### meanair
+[meanair](https://www.airpair.com/meanair) (pronouced "MEAN-er" or "MEAN-air")
+is a framework for building **+ testing** node.js apps.
 
-`meanair` (pronouced "MEAN-er" or "MEAN-air") is a framework for building and
-testing node.js web apps.
+# meanair-server
 
-API docs (soon :p) at => airpair.com/meanair
-
-## meanair.server
-
-### Run it! 
+**Run it!**
 
 `npm test`
 
-### Overview
+### Quick overview
 
 This repo is the "magic under the covers" + conventions that make setting 
 up a meanair web app so easy. Things you'll find here include:
