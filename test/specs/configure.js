@@ -40,7 +40,7 @@ module.exports = () => DESCRIBE("Config", function() {
     expect(conf2.auth.oauth.github.scope[0]).to.equal('user')
     expect(conf2.http.port).to.equal(3333)
     expect(conf2.http.host).to.equal('http://localhost:3333')
-    expectContains(conf2.http.static.dir, 'web/public')
+    expectContains(conf2.http.static.dirs[0], 'web/public')
     expect(conf2.model.mongoUrl).to.equal('mongo://ghtest2/db')
     expect(conf2.model.sessionStore.collection).to.equal('sessions-test2')
     DONE()
@@ -72,7 +72,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Applies override values on top of default config', function() {
-    var overrides4 = { auth: { oauth: { github: { signup: false } } }, model: undefined }
+    var overrides4 = { auth: { oauth: { github: { signup: false } } }, model: undefined, wrappers: { timezone: { key: 'testtime' } } }
     process.env.AUTH_APPKEY = 'test4'
     process.env.AUTH_OAUTH_GITHUB_CLIENTID = 'ghtest4'
     process.env.AUTH_OAUTH_GITHUB_CLIENTSECRET = 'ghtest4-secret'
@@ -90,6 +90,7 @@ module.exports = () => DESCRIBE("Config", function() {
     expect(conf4.auth.oauth.github.callbackURL).to.equal('http://localhost:4444/auth/github/callback')
     expect(conf4.auth.oauth.github.scope.length).to.equal(1)
     expect(conf4.auth.oauth.github.scope[0]).to.equal('user')
+    expect(conf4.wrappers.timezone.key).to.equal('testtime')
     DONE()
   })
 
@@ -100,7 +101,6 @@ module.exports = () => DESCRIBE("Config", function() {
     expect(conf42.log.app).to.equal(false)
     DONE()
   })
-
 
 
   IT('Add nested override where undefined default', function() {
@@ -116,13 +116,19 @@ module.exports = () => DESCRIBE("Config", function() {
     var overrides6 = { log: { test6: { theme: { run: 'blue', error: 'magentra' } } }, auth: undefined, model: undefined }
     process.env.LOG_TEST6_THEME_RUN = 'gray'
     process.env.LOG_TEST6_THEME_ERROR = 'white'
-
     var conf6 = Configure('dev', overrides6)
     expect(conf6.log.test6.theme.run).to.equal('gray')
     expect(conf6.log.test6.theme.error).to.equal('white')
     DONE()
-
   })
 
+
+  IT('Applies env var on top of override from undefined default section', function() {
+    var overrides7 = { auth: undefined, model: undefined, wrappers: { timezone: {key:'{{required}}' }} }
+    process.env.WRAPPERS_TIMEZONE_KEY = 'whitetime'
+    var conf7 = Configure('dev', overrides7)
+    expect(conf7.wrappers.timezone.key).to.equal('whitetime')
+    DONE()
+  })
 
 })
