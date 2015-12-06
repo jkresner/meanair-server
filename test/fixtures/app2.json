@@ -1,5 +1,6 @@
 {
   "auth":                     "{{undefine}}",
+  "http":                     { "host": "test://server.meanair/app2" },
   "model": {
     "mongoUrl":               "mongodb://localhost/meanair-server-test2",
     "sessionStore": {

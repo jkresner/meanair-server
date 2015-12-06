@@ -18,11 +18,9 @@ module.exports = () => DESCRIBE("Index", function() {
       model:    undefined
     }
     expect(global._).to.be.undefined
-    // expect(global.util).to.be.undefined
     expect(global.$log).to.be.undefined
-    var setup = Setup("dev", overrides)
+    var setup = Setup(overrides, "dev")
     expect(global._).to.exist
-    // expect(global.util).to.exist
     expect(global.$log).to.exist
     DONE()
   })
@@ -36,7 +34,7 @@ module.exports = () => DESCRIBE("Index", function() {
       model:    { mongoUrl: 'yehaooouuu', sessionStore: undefined }
     }
 
-    var setup = Setup("other", overrides)
+    var setup = Setup(overrides, "other")
     var config = setup.config
     expect(config).to.exist
     expect(config.auth.oauth.github.clientID).to.equal('returnOfTheConfig')

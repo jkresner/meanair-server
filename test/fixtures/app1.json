@@ -1,12 +1,13 @@
 {
-  "auth":                     "{{undefine}}",
-  "model":                    "{{undefine}}",
+  "auth":                  "{{undefine}}",
+  "http":                  { "host": "test://server.meanair/app1" },
   "log": {
-    "app":                    false,
-    "mw":                     false
+    "app":                 false,
+    "mw":                  false
   },
-  "logic":                    "{{undefine}}",
+  "logic":                 "{{undefine}}",
+  "model":                 "{{undefine}}",
   "middleware": {
-    "session":                "{{undefine}}"
+    "session":             "{{undefine}}"
   }
 }
