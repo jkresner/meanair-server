@@ -7,14 +7,13 @@ module.exports = () => DESCRIBE("Index", function() {
 
 
   beforeEach(function() {
-    // process.env.LOG_CONF_THEME_LOAD = "white"
+    // process.env.LOG_CFG_INIT = "white"
     if (global.config) delete global.config
   })
 
 
   IT('No model or auth config + missing done callback', function() {
-    process.env.LOG_APP_THEME_APP = "null"
-    var cfg1 = MA.Setup("dev", overrides('app1')).config
+    var cfg1 = MA.Setup(overrides('app1'), "dev").config
     function run() {
       var app = MA.App.init(cfg1)
       app.meanair.set({})
@@ -31,16 +30,14 @@ module.exports = () => DESCRIBE("Index", function() {
 
 
   IT('model + safePersist session wrapper', function() {
-    // process.env.LOG_APP_THEME_APP = "yellow"
     var overrides2 = overrides('app2')
     overrides2.appDir = __dirname.replace('specs', 'app2')
-    var cfg2 = MA.Setup("dev", overrides2).config
+    var cfg2 = MA.Setup(overrides2, "dev").config
 
     function run() {
-      $log('cfg2', cfg2)
       var app = MA.App.init(cfg2)
       var model = { DAL: { Users: {} } }
-      app.meanair.set(model, {logicDir:cfg2.logic.dir})
+      app.meanair.set(model, {logicDir:cfg2.logic.dirs[0]})
                  .use(cfg2.middleware)
                  .run()
       return app
