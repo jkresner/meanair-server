@@ -1,0 +1,14 @@
+{
+  "auth":                  "{{undefine}}",
+  "http": {
+    "host":                "test://server.meanair/app14",
+    "static": {
+      "bundles": {
+        "css/app.css":     "css/app.css",
+        "js/ang1.js":      "js/ang1.js"
+      },
+      "dist":              false
+    }
+  },
+  "model":                  "{{undefine}}"
+}

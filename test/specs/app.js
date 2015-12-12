@@ -13,7 +13,7 @@ module.exports = () => DESCRIBE("Index", function() {
 
 
   IT('No model or auth config + missing done callback', function() {
-    var cfg1 = MA.Setup(overrides('app1'), "dev").config
+    var cfg1 = MA.Setup(overrides('app01'), "dev").config
     function run() {
       var app = MA.App.init(cfg1)
       app.meanair.set({})
@@ -30,7 +30,7 @@ module.exports = () => DESCRIBE("Index", function() {
 
 
   IT('model + safePersist session wrapper', function() {
-    var overrides2 = overrides('app2')
+    var overrides2 = overrides('app02')
     overrides2.appDir = __dirname.replace('specs', 'app2')
     var cfg2 = MA.Setup(overrides2, "dev").config
 
