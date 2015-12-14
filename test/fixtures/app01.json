@@ -1,5 +1,6 @@
 {
   "auth":                  "{{undefine}}",
+  "comm":                  "{{undefine}}",
   "http":                  { "host": "test://server.meanair/app1" },
   "log": {
     "app":                 false,

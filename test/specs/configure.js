@@ -16,11 +16,12 @@ module.exports = () => DESCRIBE("Config", function() {
   })
 
 
-  IT('Defaults with barest env vars', function() {
+  IT('Defaults with barest env vars applied', function() {
     process.env.AUTH_APPKEY = 'test2'
     process.env.AUTH_OAUTH_GITHUB_CLIENTID = 'ghtest2'
     process.env.AUTH_OAUTH_GITHUB_CLIENTSECRET = 'ghtest2-secret'
     process.env.AUTH_OAUTH_GITHUB_USERAGENT = 'ghtest2-ua'
+    process.env.COMM_SENDERS_ERR_EMAIL = 'err@test.com'
     process.env.MODEL_MONGOURL = 'mongo://ghtest2/db'
     process.env.MODEL_SESSIONSTORE_COLLECTION = 'sessions-test2'
     var cfg2 = Configure({}, 'dev')
@@ -47,8 +48,8 @@ module.exports = () => DESCRIBE("Config", function() {
   })
 
 
-  IT('{{undefine}} auth section from appConfig', function() {
-    var appCfg3 = { auth: undefined, http: {} }
+  IT('{{undefine}} auth and comm sections from appConfig', function() {
+    var appCfg3 = { auth: undefined, http: {}, comm: "{{undefine}}" }
     process.env.MODEL_MONGOURL = 'mongo://ghtest3/db'
     process.env.MODEL_SESSIONSTORE_COLLECTION = 'sessions-test3'
 
@@ -62,7 +63,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('{{undefine}} log.auth section from env var', function() {
-    var appCfg4 = { auth: undefined, model: undefined }
+    var appCfg4 = { auth: "{{undefine}}", model: undefined, comm: undefined }
     process.env.LOG_AUTH = '{{undefine}}'
 
     var cfg4 = Configure(appCfg4, 'dev')
@@ -75,7 +76,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Configure works ok with cfg.init logging on', function() {
-    var appCfg5 = { auth: undefined }
+    var appCfg5 = { auth: undefined, comm: undefined }
     process.env.LOG_CFG_INIT = 'white'
     process.env.MODEL_MONGOURL = 'mongo://ghtest0/db'
     process.env.MODEL_SESSIONSTORE_COLLECTION = 'sessions-test0'
@@ -85,7 +86,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Merges appConfig values on top of defaults', function() {
-    var appCfg7 = { log: { app: false }, model: undefined, auth: undefined }
+    var appCfg7 = { log: { app: false }, model: undefined, auth: undefined, comm: undefined }
     var cfg7 = Configure(appCfg7, 'dev')
     expect(cfg7.log.app).to.equal(false)
     DONE()
@@ -93,7 +94,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Merges appConfig values and sub-section on top of defaults', function() {
-    var appCfg6 = { auth: { oauth: { github: { signup: false } } }, model: undefined, wrappers: { timezone: { key: 'testtime' } } }
+    var appCfg6 = { auth: { oauth: { github: { signup: false } } }, comm: undefined, model: undefined, wrappers: { timezone: { key: 'testtime' } } }
     process.env.AUTH_APPKEY = 'test6'
     process.env.AUTH_OAUTH_GITHUB_CLIENTID = 'ghtest6'
     process.env.AUTH_OAUTH_GITHUB_CLIENTSECRET = 'ghtest6-secret'
@@ -117,7 +118,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Add nested appConfig sub-section where no defaults exist', function() {
-    var appCfg8 = { log: { test8: { theme: { run: 'white', error: 'red' } } }, auth: undefined, model: undefined }
+    var appCfg8 = { log: { test8: { theme: { run: 'white', error: 'red' } } }, auth: undefined, comm: undefined, model: undefined }
     var cfg8 = Configure(appCfg8, 'dev')
     expect(cfg8.log.test8.theme.run).to.equal('white')
     expect(cfg8.log.test8.theme.error).to.equal('red')
@@ -126,7 +127,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Add nested appConfig false value where no defaults exist', function() {
-    var appCfg9 = { auth: { appKey: 'tt', oauth: { github: { unlink: false, relink: true, clientID: 'test', clientSecret: 'test', userAgent: 'tt9' } } }, model: undefined }
+    var appCfg9 = { auth: { appKey: 'tt', oauth: { github: { unlink: false, relink: true, clientID: 'test', clientSecret: 'test', userAgent: 'tt9' } } }, comm: undefined, model: undefined }
     var cfg9 = Configure(appCfg9, 'dev')
     expect(cfg9.auth.oauth.github.relink).to.equal(true)
     expect(cfg9.auth.oauth.github.unlink).to.equal(false)
@@ -134,14 +135,11 @@ module.exports = () => DESCRIBE("Config", function() {
   })
 
 
-  SKIP('Applies env var values on top of defaults', function() {})
-
-
   IT('Applies env var value on top of appConfig base and {{required}} values', function() {
     var appCfg11 = {
       log: { test11: { theme: { run: 'blue', error: 'magentra' } } },
       wrappers: { timezone: { key: '{{required}}' }},
-      auth: undefined, model: undefined
+      auth: undefined, comm: undefined, model: undefined
     }
     process.env.LOG_TEST11_THEME_RUN = 'gray'
     process.env.LOG_TEST11_THEME_ERROR = 'white'
@@ -158,7 +156,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Dev mode gets default host without http.host env input', function() {
-    var appCfg12 = { auth: undefined, model: undefined }
+    var appCfg12 = { auth: undefined, comm: undefined, model: undefined }
     var cfg12 = Configure(appCfg12, 'dev')
     expect(cfg12.http.host).to.equal('http://localhost:3333')
     DONE()
@@ -166,7 +164,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Test mode throws error without http.host env input', function() {
-    var fn = () => Configure({ auth: undefined, model: undefined }, 'test')
+    var fn = () => Configure({ auth: undefined, comm: undefined, model: undefined }, 'test')
     expect(fn).to.throw(Error, /Configure failed. Override or environment var required for config.HTTP_HOST/)
     DONE()
   })
