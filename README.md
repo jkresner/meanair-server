@@ -22,13 +22,3 @@ using the `overrides` object. Then apply differnt values for different contexts
 
 Control log output via config to profile your app or watch how users execute 
 your code in real-time.
-
-#### Opinionated globals
-
-Libraries like underscore (lodash), moment and a few helper methods we think 
-are ok to have accessible all over meanair apps are set in `/lib/index.js`.
-
-#### Handy hooks
-
-Conventions for automatically linking (requiring) code files placed 
-in specific folders under `/server` of a meanair app.
