@@ -152,7 +152,7 @@ module.exports = () => DESCRIBE("Config", function() {
   })
 
 
-  SKIP('Env vars without defaults or appConfig place holders disappear', function() { })
+  SKIP('Env vars without defaults or appConfig placeholders disappear', function() { })
 
 
   IT('Dev mode gets default host without http.host env input', function() {
