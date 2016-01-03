@@ -26,7 +26,7 @@ module.exports = () => DESCRIBE("SEND", function() {
             groups:     { errors: "jk <jk@air.test>,abc <sbc@test.com>" }
           },
           senders: {
-            err: { name: 'ERR', email: 'team@test.com' },
+            err: { name: 'ERR', app: 'APPKEY', email: 'team@test.com' },
             sys: { name: 'Pairbot', email: 'pairbot@test.com' }
           }
         },
@@ -70,11 +70,11 @@ module.exports = () => DESCRIBE("SEND", function() {
 
     IT('Send mass error mail to adm group', function() {
       var e = Error("Try this one on for size")
-      COMM('ses').error(e, {subject:`{ERR} ${e.message}`}, (e,r) => {
+      COMM('ses').error(e, {subject:`{APPKEY} ${e.message}`}, (e,r) => {
         expect(r.from).to.equal('ERR <team@test.com>')
         expect(r.to[0]).to.equal('jk <jk@air.test>')
         expect(r.to[1]).to.equal('abc <sbc@test.com>')
-        expect(r.subject).to.equal('{ERR} Try this one on for size')
+        expect(r.subject).to.equal('{APPKEY} Try this one on for size')
         DONE()
       })
     })
