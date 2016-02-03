@@ -1,7 +1,7 @@
 var {Setup} = require('../../lib/index')
 var plumber = require('../../lib/plumber')
 
-module.exports = () => DESCRIBE("Index", function() {
+module.exports = () => DESCRIBE("PLUMBER", function() {
 
   beforeEach(function() {
     for (var envVar in process.env) delete process.env[envVar]
@@ -11,7 +11,7 @@ module.exports = () => DESCRIBE("Index", function() {
   })
 
 
-  IT('Globals set', function() {
+  SKIP('Globals set', function() {
     var appConfig = {
       auth:     undefined,
       comm:     { senders: { err: { name: "ERR", email: "err@test.com" } } },
@@ -32,7 +32,7 @@ module.exports = () => DESCRIBE("Index", function() {
   })
 
 
-  IT('Config returned', function() {
+  SKIP('Config returned', function() {
     var github = { clientID: 'returnOfTheConfig', clientSecret: 'shhhhhh', emails: false, userAgent: 't2' }
     var appConfig = {
       auth:     { oauth: { github }, appKey: 'return' },
@@ -47,7 +47,7 @@ module.exports = () => DESCRIBE("Index", function() {
     expect(config.auth.oauth.github.clientID).to.equal('returnOfTheConfig')
     expect(config.log).to.exist
     expect(config.http).to.exist
-    expect(config.model.mongoUrl).to.equal('yehaooouuu')
+    expect(config.model.domain.mongoUrl).to.equal('yehaooouuu')
     DONE()
   })
 

@@ -22,8 +22,8 @@ module.exports = () => DESCRIBE("Config", function() {
     process.env.AUTH_OAUTH_GITHUB_CLIENTSECRET = 'ghtest2-secret'
     process.env.AUTH_OAUTH_GITHUB_USERAGENT = 'ghtest2-ua'
     process.env.COMM_SENDERS_ERR_EMAIL = 'err@test.com'
-    process.env.MODEL_MONGOURL = 'mongo://ghtest2/db'
-    process.env.MODEL_SESSIONSTORE_COLLECTION = 'sessions-test2'
+    process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest2/db'
+    process.env.MODEL_SESSION_COLLECTION = 'sessions-test2'
     var cfg2 = Configure({}, 'dev')
     expect(cfg2.env).to.equal('dev')
     expect(cfg2.auth.loginUrl).to.equal('/')
@@ -42,22 +42,22 @@ module.exports = () => DESCRIBE("Config", function() {
     expect(cfg2.http.port).to.equal(3333)
     expect(cfg2.http.host).to.equal('http://localhost:3333')
     EXPECT.contains(cfg2.http.static.dirs[0], 'web/public')
-    expect(cfg2.model.mongoUrl).to.equal('mongo://ghtest2/db')
-    expect(cfg2.model.sessionStore.collection).to.equal('sessions-test2')
+    expect(cfg2.model.domain.mongoUrl).to.equal('mongo://ghtest2/db')
+    expect(cfg2.model.session.collection).to.equal('sessions-test2')
     DONE()
   })
 
 
   IT('{{undefine}} auth and comm sections from appConfig', function() {
     var appCfg3 = { auth: undefined, http: {}, comm: "{{undefine}}" }
-    process.env.MODEL_MONGOURL = 'mongo://ghtest3/db'
-    process.env.MODEL_SESSIONSTORE_COLLECTION = 'sessions-test3'
+    process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest3/db'
+    process.env.MODEL_SESSION_COLLECTION = 'sessions-test3'
 
     var cfg3 = Configure(appCfg3, 'dev')
     expect(cfg3.auth).to.be.undefined
     expect(cfg3.http.host).to.equal('http://localhost:3333')
-    expect(cfg3.model.mongoUrl).to.equal('mongo://ghtest3/db')
-    expect(cfg3.model.sessionStore.collection).to.equal('sessions-test3')
+    expect(cfg3.model.domain.mongoUrl).to.equal('mongo://ghtest3/db')
+    expect(cfg3.model.session.collection).to.equal('sessions-test3')
     DONE()
   })
 
@@ -78,8 +78,8 @@ module.exports = () => DESCRIBE("Config", function() {
   IT('Configure works ok with cfg.init logging on', function() {
     var appCfg5 = { auth: undefined, comm: undefined }
     process.env.LOG_CFG_INIT = 'white'
-    process.env.MODEL_MONGOURL = 'mongo://ghtest0/db'
-    process.env.MODEL_SESSIONSTORE_COLLECTION = 'sessions-test0'
+    process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest0/db'
+    process.env.MODEL_SESSION_COLLECTION = 'sessions-test0'
     var cfg0 = Configure(appCfg5, 'dev')
     DONE()
   })

@@ -3,9 +3,12 @@
   "comm":                     "{{undefine}}",
   "http":                     { "host": "test://server.meanair/app2" },
   "model": {
-    "mongoUrl":               "mongodb://localhost/meanair-server-test2",
-    "sessionStore": {
-      "collection":           "sessions-test2"
+    "domain": {
+      "mongoUrl":               "mongodb://localhost/meanair-server-test2"
+    },
+    "session": {
+      "collection":           "sessions-test2",
+      "regulate":             true
     }
   },
   "log": {

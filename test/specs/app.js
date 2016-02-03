@@ -15,9 +15,9 @@ module.exports = () => DESCRIBE("Index", function() {
   IT('No model or auth config + missing done callback', function() {
     var cfg1 = MA.Setup(overrides('app01'), "dev").config
     function run() {
-      var app = MA.App.init(cfg1)
+      var app = MA.App(cfg1)
       app.meanair.set({})
-                 .use(cfg1.middleware)
+                 .chain(cfg1.middleware)
                  .run()
       return app
     }
@@ -35,10 +35,10 @@ module.exports = () => DESCRIBE("Index", function() {
     var cfg2 = MA.Setup(overrides2, "dev").config
 
     function run() {
-      var app = MA.App.init(cfg2)
-      var model = { DAL: { Users: {} } }
+      var app = MA.App(cfg2)
+      var model = { DAL: { Users: {} }, sessionStore: function() {} }
       app.meanair.set(model, {logicDir:cfg2.logic.dirs[0]})
-                 .use(cfg2.middleware)
+                 .chain(cfg2.middleware)
                  .run()
       return app
     }
