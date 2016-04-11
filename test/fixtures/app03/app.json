@@ -1,0 +1,16 @@
+{
+  "auth":          "{{undefine}}",
+  "comm": {
+    "senders": {
+      "err":       { "name": "ERR", "email": "err@test.com" }
+    }
+  },
+  "http":          { "host": "test://mean.air/" },
+  "model":         "{{undefine}}",
+  "wrappers": {
+    "smtp": {
+      "service":   "test",
+      "auth":      { "user": "a", "pass": "b" }
+    }
+  }
+}

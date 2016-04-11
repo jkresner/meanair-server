@@ -1,10 +1,13 @@
 {
+  "appDir":                   "../",
   "auth":                     "{{undefine}}",
   "comm":                     "{{undefine}}",
-  "http":                     { "host": "test://server.meanair/app2" },
+  "http": {
+    "host":                   "test://server.meanair/app2"
+  },
   "model": {
     "domain": {
-      "mongoUrl":               "mongodb://localhost/meanair-server-test2"
+      "mongoUrl":             "mongodb://localhost/meanair-server-test2"
     },
     "session": {
       "collection":           "sessions-test2",

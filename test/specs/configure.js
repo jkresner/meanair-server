@@ -23,7 +23,7 @@ module.exports = () => DESCRIBE("Config", function() {
     process.env.AUTH_OAUTH_GITHUB_USERAGENT = 'ghtest2-ua'
     process.env.COMM_SENDERS_ERR_EMAIL = 'err@test.com'
     process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest2/db'
-    process.env.MODEL_SESSION_COLLECTION = 'sessions-test2'
+    process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test2'
     var cfg2 = Configure({}, 'dev')
     expect(cfg2.env).to.equal('dev')
     expect(cfg2.auth.loginUrl).to.equal('/')
@@ -43,7 +43,7 @@ module.exports = () => DESCRIBE("Config", function() {
     expect(cfg2.http.host).to.equal('http://localhost:3333')
     EXPECT.contains(cfg2.http.static.dirs[0], 'web/public')
     expect(cfg2.model.domain.mongoUrl).to.equal('mongo://ghtest2/db')
-    expect(cfg2.model.session.collection).to.equal('sessions-test2')
+    expect(cfg2.middleware.session.store.collection).to.equal('sessions-test2')
     DONE()
   })
 
@@ -51,19 +51,19 @@ module.exports = () => DESCRIBE("Config", function() {
   IT('{{undefine}} auth and comm sections from appConfig', function() {
     var appCfg3 = { auth: undefined, http: {}, comm: "{{undefine}}" }
     process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest3/db'
-    process.env.MODEL_SESSION_COLLECTION = 'sessions-test3'
+    process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test3'
 
     var cfg3 = Configure(appCfg3, 'dev')
     expect(cfg3.auth).to.be.undefined
     expect(cfg3.http.host).to.equal('http://localhost:3333')
     expect(cfg3.model.domain.mongoUrl).to.equal('mongo://ghtest3/db')
-    expect(cfg3.model.session.collection).to.equal('sessions-test3')
+    expect(cfg3.middleware.session.store.collection).to.equal('sessions-test3')
     DONE()
   })
 
 
   IT('{{undefine}} log.auth section from env var', function() {
-    var appCfg4 = { auth: "{{undefine}}", model: undefined, comm: undefined }
+    var appCfg4 = { auth: "{{undefine}}", model: undefined, comm: undefined, middleware: undefined }
     process.env.LOG_AUTH = '{{undefine}}'
 
     var cfg4 = Configure(appCfg4, 'dev')
@@ -79,14 +79,14 @@ module.exports = () => DESCRIBE("Config", function() {
     var appCfg5 = { auth: undefined, comm: undefined }
     process.env.LOG_CFG_INIT = 'white'
     process.env.MODEL_DOMAIN_MONGOURL = 'mongo://ghtest0/db'
-    process.env.MODEL_SESSION_COLLECTION = 'sessions-test0'
+    process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test0'
     var cfg0 = Configure(appCfg5, 'dev')
     DONE()
   })
 
 
   IT('Merges appConfig values on top of defaults', function() {
-    var appCfg7 = { log: { app: false }, model: undefined, auth: undefined, comm: undefined }
+    var appCfg7 = { log: { app: false }, model: undefined, auth: undefined, comm: undefined, middleware: undefined }
     var cfg7 = Configure(appCfg7, 'dev')
     expect(cfg7.log.app).to.equal(false)
     DONE()
@@ -94,7 +94,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Merges appConfig values and sub-section on top of defaults', function() {
-    var appCfg6 = { auth: { oauth: { github: { signup: false } } }, comm: undefined, model: undefined, wrappers: { timezone: { key: 'testtime' } } }
+    var appCfg6 = { auth: { oauth: { github: { signup: false } } }, comm: undefined, model: undefined, middleware: undefined, wrappers: { timezone: { key: 'testtime' } } }
     process.env.AUTH_APPKEY = 'test6'
     process.env.AUTH_OAUTH_GITHUB_CLIENTID = 'ghtest6'
     process.env.AUTH_OAUTH_GITHUB_CLIENTSECRET = 'ghtest6-secret'
@@ -118,7 +118,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Add nested appConfig sub-section where no defaults exist', function() {
-    var appCfg8 = { log: { test8: { theme: { run: 'white', error: 'red' } } }, auth: undefined, comm: undefined, model: undefined }
+    var appCfg8 = { log: { test8: { theme: { run: 'white', error: 'red' } } }, auth: undefined, comm: undefined, model: undefined, middleware: undefined  }
     var cfg8 = Configure(appCfg8, 'dev')
     expect(cfg8.log.test8.theme.run).to.equal('white')
     expect(cfg8.log.test8.theme.error).to.equal('red')
@@ -127,6 +127,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Add nested appConfig false value where no defaults exist', function() {
+    process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions-test0'
     var appCfg9 = { auth: { appKey: 'tt', oauth: { github: { unlink: false, relink: true, clientID: 'test', clientSecret: 'test', userAgent: 'tt9' } } }, comm: undefined, model: undefined }
     var cfg9 = Configure(appCfg9, 'dev')
     expect(cfg9.auth.oauth.github.relink).to.equal(true)
@@ -139,7 +140,7 @@ module.exports = () => DESCRIBE("Config", function() {
     var appCfg11 = {
       log: { test11: { theme: { run: 'blue', error: 'magentra' } } },
       wrappers: { timezone: { key: '{{required}}' }},
-      auth: undefined, comm: undefined, model: undefined
+      auth: undefined, comm: undefined, model: undefined, middleware: undefined
     }
     process.env.LOG_TEST11_THEME_RUN = 'gray'
     process.env.LOG_TEST11_THEME_ERROR = 'white'
@@ -156,7 +157,7 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Dev mode gets default host without http.host env input', function() {
-    var appCfg12 = { auth: undefined, comm: undefined, model: undefined }
+    var appCfg12 = { auth: undefined, comm: undefined, model: undefined, middleware: undefined }
     var cfg12 = Configure(appCfg12, 'dev')
     expect(cfg12.http.host).to.equal('http://localhost:3333')
     DONE()
@@ -164,13 +165,14 @@ module.exports = () => DESCRIBE("Config", function() {
 
 
   IT('Test mode throws error without http.host env input', function() {
-    var fn = () => Configure({ auth: undefined, comm: undefined, model: undefined }, 'test')
+    var fn = () => Configure({ auth: undefined, comm: undefined, model: undefined, middleware: undefined }, 'test')
     expect(fn).to.throw(Error, /Configure failed. Override or environment var required for config.HTTP_HOST/)
     DONE()
   })
 
 
   IT('Applies distribution bundle values when environment dist.manifest set', function() {
+    process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions'
     var appCfg14 = require('../fixtures/app14.json')
     appCfg14.appDir = join(__dirname, '../')
 

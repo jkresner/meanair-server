@@ -1,5 +1,5 @@
-var {Setup} = require('../../lib/index')
-var plumber = require('../../lib/plumber')
+var MAServer = require('../../lib/index')
+
 
 module.exports = () => DESCRIBE("PLUMBER", function() {
 
@@ -8,21 +8,14 @@ module.exports = () => DESCRIBE("PLUMBER", function() {
     if (global.Wrappers) delete global.Wrappers
     if (global._) delete global._
     if (global.$log) delete global.$log
+    process.env.MIDDLEWARE_SESSION_STORE_COLLECTION = 'sessions'
   })
 
 
-  SKIP('Globals set', function() {
-    var appConfig = {
-      auth:     undefined,
-      comm:     { senders: { err: { name: "ERR", email: "err@test.com" } } },
-      http:     { host:'test://mean.air/' },
-      model:    undefined,
-      wrappers: { smtp: { service: 'test', auth: {user:'a',pass:'b'} } }
-    }
-
+  IT('Globals set', function() {
     expect(global._).to.be.undefined
     expect(global.$log).to.be.undefined
-    var setup = Setup.call({plumber}, appConfig, "dev")
+    var cfg = MAServer.Config(__dirname.replace('specs','fixtures/app03'), "dev")
     expect(global.Wrappers.smtp).to.exist
     expect(global.Wrappers.ses).to.be.undefined
     expect(global.COMM).to.exist
@@ -41,7 +34,7 @@ module.exports = () => DESCRIBE("PLUMBER", function() {
       model:    { mongoUrl: 'yehaooouuu', sessionStore: undefined }
     }
 
-    var setup = Setup.call({plumber}, appConfig, "other")
+    var instance = MAServer.Config(__dirname, "other")
     var config = setup.config
     expect(config).to.exist
     expect(config.auth.oauth.github.clientID).to.equal('returnOfTheConfig')

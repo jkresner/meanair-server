@@ -35,6 +35,7 @@ module.exports = () => DESCRIBE("SEND", function() {
           ses: {}
         }
       }
+      global.Composer = require('../../lib/composer')(config)
       COMM = require('../../lib/comm')(config)
     })
 
