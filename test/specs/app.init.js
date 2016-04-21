@@ -23,6 +23,8 @@ module.exports = () => DESCRIBE("Router", function() {
         if (++count == 1) {
           var mwN = (n) => function(req,res,next) {
             // console.log('mw'+n);
+            req.locals.order = req.locals.order || []
+            req.locals.order.push('mw'+n)
             next(null, req.locals['mw'+n] = true)
           }
           MW.cache('mw1', mwN(1))
@@ -44,23 +46,25 @@ module.exports = () => DESCRIBE("Router", function() {
 
 
           app.honey.Router('/r1')
-           .use(MW.$$('mw1 mw3'))
+           .use(MW.$['mw1']) //mw3'))
+           // .use(MW.$$('mw1 mw3'))
+           .use(MW.$['mw3'])
            .get('/r1', function(req, res) {
             // console.log('in /r1'.yellow, req.locals)
             expect(req.locals.mw1).to.equal(true)
             expect(req.locals.mw2).to.be.undefined
             expect(req.locals.mw3).to.equal(true)
+            expect(req.locals.order[0]).to.equal('mw1')
+            expect(req.locals.order[1]).to.equal('mw3')
             res.send('ok1')
           })
 
           app.honey.Router('m2').use(MW.$.mw2)
             .get('/r2', (req, res) => {
             // console.log('in /r2'.yellow, req.locals)
-            // expect(req.locals.mw1).to.be.undefined
-            expect(req.locals.mw1).be.undefined
+            expect(req.locals.mw1).to.be.undefined
             expect(req.locals.mw2).to.equal(true)
-            expect(req.locals.mw3).be.undefined
-            // expect(req.locals.mw3).to.be.undefined
+            expect(req.locals.mw3).to.be.undefined
             res.send('ok2')
           })
         }

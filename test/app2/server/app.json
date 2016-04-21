@@ -5,17 +5,14 @@
   "http": {
     "host":                   "test://server.meanair/app2"
   },
+  "middleware": {
+    "session": {
+      "store":                { "collection": "sessions-test2" }
+    }
+  },
   "model": {
     "domain": {
       "mongoUrl":             "mongodb://localhost/meanair-server-test2"
     },
-    "session": {
-      "collection":           "sessions-test2",
-      "regulate":             true
-    }
-  },
-  "log": {
-    "app":                    false,
-    "mw":                     false
   }
 }
