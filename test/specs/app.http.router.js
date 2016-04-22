@@ -22,7 +22,7 @@ module.exports = () => DESCRIBE("Router", function() {
         var [app, MW, cfg] = dependencies
         if (++count == 1) {
           var mwN = (n) => function(req,res,next) {
-            // console.log('mw'+n);
+            // console.log('mw'+n);`
             req.locals.order = req.locals.order || []
             req.locals.order.push('mw'+n)
             next(null, req.locals['mw'+n] = true)
